@@ -1,21 +1,9 @@
-clear;
-
-load('cleandata_students.mat');
-%load('noisydata_students.mat');
-
-originalX = x;
-originalY = y;
-trainingSize = 9;
-n = length(y);
-
-res = zeros(100,3);
-indexer = 1;
-
-for layers = 1:5
-    for neurons_per_layers = [10 20 30 50 100]
-        
-        l = ones(1,layers) * neurons_per_layers;
+function [res] = validationTesting(trainingSize, x, y, l, trainingFunctName, varargin)
         errSum = 0;
+        n = length(y);
+        originalX = x;
+        originalY = y;
+        res = zeros(1,length(varargin)+1);
         
         for k = 1:trainingSize
             starting = floor(k * n / (trainingSize + 1));
@@ -31,8 +19,18 @@ for layers = 1:5
 
             [a, b] = ANNdata(x, y);
             [testA, testB] = ANNdata(validSet, validRes);
-
-            [N, tr] = createNetwork(a, b, l);
+            
+            if (strcmp(trainingFunctName, 'traingd') == 1)
+                [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}); 
+            elseif (strcmp(trainingFunctName, 'traingda') == 1)
+                [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}, varargin{2}, varargin{3}); 
+    
+            elseif (stccmp(trainingFunctName, 'traingdm') == 1)
+                [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}, varargin{2}); 
+        
+            elseif(strcmp(trainingFunctName, 'trainrp') == 1)
+                [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}, varargin{2}, varargin{3}); 
+            end
             
             nbError = 0;
             
@@ -50,10 +48,11 @@ for layers = 1:5
             x = originalX;
             y = originalY;
         end
+
+        for i=1:length(varargin)
+            res(1, i) = varargin{i};
+        end
         
-        res(indexer, 1) = layers;
-        res(indexer, 2) = neurons_per_layers;
-        res(indexer, 3) = 100*errSum/trainingSize;
-        indexer = indexer + 1;
-    end
+        res(1,length(varargin)+1) = 100*errSum/trainingSize;
 end
+
