@@ -32,7 +32,7 @@ end
 % for lr = 0.01:0.01:0.1   
 %     for lr_inc = 1.01:0.05:1.5
 %         for lr_dec = 0.1:0.1:0.9
-%             traingdRes(indexerTrainGda, :) = validationTesting(trainingSize, x, y, l, 'traingda', lr, lr_inc, lr_dec);
+%             traingdaRes(indexerTrainGda, :) = validationTesting(trainingSize, x, y, l, 'traingda', lr, lr_inc, lr_dec);
 %             indexerTrainGda = indexerTrainGda + 1;
 %         end
 %     end
