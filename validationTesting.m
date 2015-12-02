@@ -25,7 +25,7 @@ function [res] = validationTesting(trainingSize, x, y, l, trainingFunctName, var
             elseif (strcmp(trainingFunctName, 'traingda') == 1)
                 [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}, varargin{2}, varargin{3}); 
     
-            elseif (stccmp(trainingFunctName, 'traingdm') == 1)
+            elseif (stcmp(trainingFunctName, 'traingdm') == 1)
                 [N, tr] = createCustomNetwork(a, b, l, trainingFunctName, varargin{1}, varargin{2}); 
         
             elseif(strcmp(trainingFunctName, 'trainrp') == 1)

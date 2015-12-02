@@ -9,7 +9,7 @@ function [ N, tr ] = createCustomNetwork( x, y, l, trainingFunctName, varargin)
     N.divideParam.valInd = 904:1004;
     N.divideParam.testInd = [];
     N.trainFcn = trainingFunctName;
-
+    N.trainParam.epochs = 5000;
     N.trainParam.lr = varargin{1};
     
     if (strcmp(trainingFunctName, 'traingda') == 1)
