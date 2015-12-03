@@ -8,11 +8,11 @@ originalY = y;
 trainingSize = 9;
 n = length(y);
 
-res = zeros(100,3);
+res = zeros(50,3);
 indexer = 1;
 
-for layers = 1:10
-    for neurons_per_layers = (1:10)*10
+for layers = 2:2
+    for neurons_per_layers = 30:30
         
         l = ones(1,layers) * neurons_per_layers;
         errSum = 0;
@@ -20,42 +20,37 @@ for layers = 1:10
         for k = 1:trainingSize
             starting = floor(k * n / (trainingSize + 1));
             ending = floor((k+1) * n / (trainingSize + 1));
-            testSet = x(starting:ending,:);
-            testRes = y(starting:ending);
+            
+            % take the validation set (10%) and put it in the end
+            validSet = x(starting:ending,:);
+            validRes = y(starting:ending);
             x(starting:ending,:) = [];
             y(starting:ending,:) = [];
-            predictedSize = length(testRes);
-            %predictedSet=[predictedSize:1];
-            x = [x; testSet];
-            y = [y; testRes];
+            x = [x; validSet];
+            y = [y; validRes];
 
             [a, b] = ANNdata(x, y);
-            [testA, testB] = ANNdata(testSet, testRes);
-
-            N = createNetwork(a, b, l);
+            [testA, testB] = ANNdata(validSet, validRes);
+            
+            [N, tr] = createCustomNetwork(a, b, l, 'traingd', 0.1);
+            
             nbError = 0;
-
+            
             for i = 1 : (1 + ending - starting)
                 predicted = predict(N, testA(:, i));
 
-                %predictedSet(i,1) = predicted;
-                if (predicted ~= testRes(i))
+                if (0 == testB(predicted, i))
                    nbError = nbError + 1;
                 end
             end
-
-            %confusionMatrix = confusionMatrix + buildConfusionMatrix(testRes,predictedSet,6);
-
+            
             avg = nbError/(1 + ending - starting);
-
-            errSum = errSum + avg;
-
+            errSum = errSum + avg;           
+            
             x = originalX;
             y = originalY;
         end
-
-        layers
-        neurons_per_layers
+        
         res(indexer, 1) = layers;
         res(indexer, 2) = neurons_per_layers;
         res(indexer, 3) = 100*errSum/trainingSize;
