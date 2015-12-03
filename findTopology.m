@@ -11,8 +11,8 @@ n = length(y);
 res = zeros(50,3);
 indexer = 1;
 
-for layers = 2:2
-    for neurons_per_layers = 30:30
+for layers = 1:4
+    for neurons_per_layers = [10 20 30 50 100]
         
         l = ones(1,layers) * neurons_per_layers;
         errSum = 0;
