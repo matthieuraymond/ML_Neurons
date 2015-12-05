@@ -56,14 +56,3 @@ meanRecall = computeMeanRecall(confusionMatrix);
 meanPrecision = computeMeanPrecision(confusionMatrix);
 meanF1 = CalcF(meanPrecision,meanRecall);
 meanClass = computeMeanClassificationRate(confusionMatrix);
-
-for i = 1: size(confusionMatrix,1)
-    TP = confusionMatrix(i,i);
-    FN = sum(confusionMatrix(i,:)) - TP;
-    FP = sum(confusionMatrix(:,i)) - TP;
-    TN = sum(confusionMatrix(:)) - (TP+ FP +FN);
-    classRecalls(i,1) = calculateRecall(TP, FN);
-    classPrecisions(i,1) = calculatePrecision(TP, FP);
-    classF1s(i,1) = CalcF(classPrecisions(i,1),classRecalls(i,1));
-    classRates(i,1) = calculateClassificationRate(TP, TN, sum(confusionMatrix(:)));
-end

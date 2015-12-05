@@ -18,6 +18,5 @@ end
 
 meanClassRate = classSum / actualSize;
 
-
 end
 

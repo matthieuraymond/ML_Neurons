@@ -1,4 +1,6 @@
-function [res] = validationTesting(trainingSize, x, y, l, trainingFunctName, varargin)
+function [res] = testTrainParam(trainingSize, x, y, l, trainingFunctName, varargin)
+% Perform 10 fold testing using a specific training function with custom
+% parameters
         errSum = 0;
         n = length(y);
         originalX = x;
